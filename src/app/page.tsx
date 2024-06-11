@@ -1,21 +1,21 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 import { products } from './data/dummy';
-import { initBackButton, isTMA, initMainButton } from '@tma.js/sdk';
+import { initBackButton, initMainButton } from '@tma.js/sdk';
 
 import { ProductCard } from './components/ProductCard';
 import { Product } from './types';
-import WebApp from '@twa-dev/sdk'
 import { useRouter } from 'next/navigation';
+
 
 export default function Home() {
   const [cart, setCart] = useState<Product[]>([]);
   const router = useRouter();
 
-  const [backButton] = initBackButton();
-  const [mainButton] = initMainButton();
-
-  backButton.hide()
+  useEffect(() => {
+    const [backButton] = initBackButton();
+    backButton.hide()
+  }, [])
 
 
 
@@ -23,12 +23,7 @@ export default function Home() {
 
   const handleAddToCart = async (product: Product) => {
     if (product.outOfStock) {
-      if (await isTMA()) {
-        WebApp.showAlert('This is out of stock');
-      }
-      else {
-        alert("This is out of stock");
-      }
+      alert('This is out of stock');
       return;
 
     }
@@ -36,17 +31,18 @@ export default function Home() {
 
   };
 
-  useEffect(()=>{
-    const cartStorage=localStorage.getItem("carts");
+  useEffect(() => {
+    const cartStorage = localStorage.getItem("carts");
     if (!cartStorage) {
       return;
     }
 
     setCart(JSON.parse(cartStorage));
 
-  },[])
+  }, [])
 
   useEffect(() => {
+    const [mainButton] = initMainButton();
     if (cart.length === 0) {
       mainButton.hide();
       return;
@@ -55,9 +51,9 @@ export default function Home() {
     mainButton.setText(`View Cart (${cart.length})`)
     mainButton.on("click", () => {
       router.push("/cart");
-      localStorage.setItem("carts",JSON.stringify(cart));
+      localStorage.setItem("carts", JSON.stringify(cart));
     })
-  }, [cart, cart.length, mainButton, router])
+  }, [cart, cart.length, router])
 
 
   return (

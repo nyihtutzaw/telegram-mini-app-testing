@@ -1,4 +1,4 @@
-'use client'; // Added to indicate client-side rendering
+'use client';
 
 import React, { useEffect, useState } from 'react';
 
@@ -11,19 +11,26 @@ export default function Cart() {
   const router = useRouter();
   const [cart, setCart] = useState<Product[]>([]);
 
-  const [backButton] = initBackButton();
-  const [mainButton] = initMainButton();
+  useEffect(() => {
+    const [backButton] = initBackButton();
+    const [mainButton] = initMainButton();
 
-  backButton.show();
+    backButton.show();
+
+    backButton.on('click', () => {
+      // mainButton.setText(`View Cart (${cart.length})`)
+      router.replace('/');
+    });
+
+    mainButton.show();
+    mainButton.setText("Checkout")
+  },[router])
 
 
 
- 
 
-  backButton.on('click', () => {
-    // mainButton.setText(`View Cart (${cart.length})`)
-    router.replace('/');
-  });
+
+
 
   // Function to handle removing a product from the cart
   const handleRemoveFromCart = (productToRemove: Product) => {
@@ -33,18 +40,16 @@ export default function Cart() {
   };
 
   useEffect(() => {
+    const [mainButton] = initMainButton();
     const cartStorage = localStorage.getItem('carts');
     if (!cartStorage) {
       return;
     }
 
     setCart(JSON.parse(cartStorage));
-  }, [mainButton])
+  }, [])
 
-  useEffect(()=>{
-    mainButton.show();
-    mainButton.setText("Checkout")
-  },[mainButton])
+ 
 
   // Calculate total amount
   const calculateTotalAmount = () => {
