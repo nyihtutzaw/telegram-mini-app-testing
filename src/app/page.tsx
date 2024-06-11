@@ -49,9 +49,12 @@ export default function Home() {
     }
     mainButton.show();
     mainButton.setText(`View Cart (${cart.length})`)
+    mainButton.enable();
     mainButton.on("click", () => {
-      router.push("/cart");
       localStorage.setItem("carts", JSON.stringify(cart));
+      mainButton.hide();
+      router.push("/cart");
+      
     })
   }, [cart, cart.length, router])
 

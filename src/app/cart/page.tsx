@@ -1,8 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-
-import { initBackButton, initMainButton } from '@tma.js/sdk';
+import { initBackButton, initMainButton, initPopup } from '@tma.js/sdk';
 import { useRouter } from 'next/navigation';
 import { Product } from '../types';
 import { CartItem } from '../components/CartItem';
@@ -11,24 +10,14 @@ export default function Cart() {
   const router = useRouter();
   const [cart, setCart] = useState<Product[]>([]);
 
+
   useEffect(() => {
     const [backButton] = initBackButton();
-    const [mainButton] = initMainButton();
-
     backButton.show();
-
     backButton.on('click', () => {
-      // mainButton.setText(`View Cart (${cart.length})`)
       router.replace('/');
     });
-
-    mainButton.show();
-    mainButton.setText("Checkout")
-  },[router])
-
-
-
-
+  }, [router])
 
 
 
@@ -40,7 +29,6 @@ export default function Cart() {
   };
 
   useEffect(() => {
-    const [mainButton] = initMainButton();
     const cartStorage = localStorage.getItem('carts');
     if (!cartStorage) {
       return;
@@ -49,7 +37,22 @@ export default function Cart() {
     setCart(JSON.parse(cartStorage));
   }, [])
 
- 
+  const handleCheckout = () => {
+    const popup = initPopup();
+    popup
+      .open({
+        title: 'Your Order has been submitted',
+        message: 'You will receive confirmation message from the bot',
+        buttons: [{ id: 'my-id', type: 'default', text: 'Return to Home' }],
+      })
+      .then(() => {
+        setCart([]);
+        localStorage.removeItem("carts");
+        router.replace("/");
+      });
+  }
+
+
 
   // Calculate total amount
   const calculateTotalAmount = () => {
@@ -72,6 +75,9 @@ export default function Cart() {
         <div className="flex justify-between mt-4 text-sm font-medium text-telegram-black">
           <span>Total:</span>
           <span>{totalAmount} THB</span>
+        </div>
+        <div className='py-4'>
+          <button className='bg-telegram-primary py-2 px-4' onClick={handleCheckout}><p className='text-telegram-primary-text'>Checkout</p></button>
         </div>
       </div>
     </div>
