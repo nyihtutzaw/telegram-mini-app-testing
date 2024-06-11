@@ -1,7 +1,8 @@
+import { Product } from "../types";
 
-export const products = [
+export const products:Product[] = [
   { id: 1, name: 'Espresso', image: 'https://t4.ftcdn.net/jpg/01/16/61/93/360_F_116619399_YA611bKNOW35ffK0OiyuaOcjAgXgKBui.jpg', price: 40 },
-  { id: 2, name: 'Cappuccino', image: 'https://t3.ftcdn.net/jpg/01/59/18/36/360_F_159183621_0YTKAAqAA7GI7DlCBfYJ2wfKbC6Zf30V.jpg', price: 40 },
+  { id: 2, name: 'Cappuccino', image: 'https://t3.ftcdn.net/jpg/01/59/18/36/360_F_159183621_0YTKAAqAA7GI7DlCBfYJ2wfKbC6Zf30V.jpg', price: 40,outOfStock:true },
   { id: 3, name: 'Latte', image: 'https://somedayilllearn.com/wp-content/uploads/2020/05/cup-of-black-coffee-scaled-720x540.jpeg', price: 40 },
   { id: 4, name: 'Americano', image: 'https://media.istockphoto.com/id/1349239413/photo/shot-of-coffee-beans-and-a-cup-of-black-coffee-on-a-wooden-table.jpg?b=1&s=612x612&w=0&k=20&c=YaXq8wWShhtiRnEVJvPTd_0h4eeZ1CFEYi0BszPg74A=', price: 35 },
   { id: 5, name: 'Mocha', image: 'https://www.allrecipes.com/thmb/Hqro0FNdnDEwDjrEoxhMfKdWfOY=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/21667-easy-iced-coffee-ddmfs-4x3-0093-7becf3932bd64ed7b594d46c02d0889f.jpg', price: 45 },
